@@ -60,10 +60,11 @@ This codebase depends on a **Google Drive dataset (~1 TB)**, which includes:
 ### 🧾 Data Sources
 
 - Described in detail in the **Supplementary Information (SI)** of the paper.
-- Downloaded via tools such as:
-  - [Herbie](https://github.com/blaylockbk/Herbie) for meteorological reanalysis
-  - [AWS CLI](https://aws.amazon.com/cli/) for public archive access
+- Downloaded and uploaded via tools such as:
+  - [Herbie](https://github.com/blaylockbk/Herbie) for HRRR meteorological reanalysis
+  - [AWS CLI](https://aws.amazon.com/cli/) for AWS archive access
+  - [PyDrive](https://pythonhosted.org/PyDrive/) for uploading the data
   
-Thanks for the providers of data sources and related download packages!
+Thanks for the providers of data sources and related packages!
 
 
