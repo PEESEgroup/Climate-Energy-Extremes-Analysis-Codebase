@@ -1,8 +1,8 @@
 # Climate-Energy Extremes Analysis Codebase
 
-This repository contains the official code used in the paper _Climate-Driven Extremes and Regional Divergence in Renewable-Powered Energy Systems_.
+This repository contains the official code used in the paper _Climate change drives imbalance spikes, generation droughts, and chronic seasonal synchronization in renewable power systems_.
 
-The analysis investigates how climate-driven shifts impact energy system extremes across multiple timescales using data-driven methods and deep learning models.
+The analysis investigates how physical climate-driven shifts impact energy system extremes across multiple timescales using data-driven methods and generative learning models.
 
 ---
 
