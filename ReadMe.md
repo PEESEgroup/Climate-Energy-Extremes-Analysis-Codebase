@@ -10,7 +10,7 @@ The analysis investigates how physical climate-driven shifts impact energy syste
 
 A conceptual illustration of the study framework and workflow is shown below:
 
-![Figure 1](Figs/figure1.png)
+![Figure 1](02figs/figure1.png)
 
 The image summarizes the overall design of the data pipeline, modeling, and multi-timescale extreme energy system event evaluation.
 
