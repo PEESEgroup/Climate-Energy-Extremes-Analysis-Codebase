@@ -1,0 +1,162 @@
+stage,file,origin_path,purpose
+01_acquire_data,01_process_tgw.py,/home/ubuntu/code/process_tgw.py,"Stream-process TGW future weekly NetCDF files -> compact fp16 store of the 7 SRGAN LR inputs,"
+01_acquire_data,02_tgw_3d_ctl.py,/home/ubuntu/code/tgw_3d_ctl.py,"Disk-guarded, HIGH-CONCURRENCY Globus->extract controller for the TGW 3-hourly 3-D wind stream."
+01_acquire_data,03_process_tgw_3d.py,/home/ubuntu/code/process_tgw_3d.py,Stream-process TGW 3-hourly 3D weekly NetCDF -> compact fp16 store of near-surface WIND PROFILE
+01_acquire_data,04_tgw_3d_future_all.sh,/home/ubuntu/code/tgw_3d_future_all.sh,"Full-time-series future TGW-3D download: ALL 4 scenarios, 2030-2050, FULL weekly (kstride=1)."
+01_acquire_data,05_regrid_future.py,/home/ubuntu/code/regrid_future.py,"Regrid the 4 TGW FUTURE scenarios (2030-2050, 1092 files each) -> LR 89x211, per scenario."
+01_acquire_data,06_tgw_pr_ctl.py,/home/ubuntu/code/tgw_pr_ctl.py,"Disk-guarded, batched Globus->extract controller for ONE TGW precip/snow stream."
+01_acquire_data,07_tgw_pr_all.sh,/home/ubuntu/code/tgw_pr_all.sh,Sequential orchestrator for TGW precip/snow streams. Each stream = 14 parallel extract workers +
+01_acquire_data,08_process_tgw_pr.py,/home/ubuntu/code/process_tgw_pr.py,"Stream-process TGW weekly NetCDF -> compact fp16 PRECIP/SNOW store, then DELETE raw."
+01_acquire_data,09_agg_tgw_pr_subregion.py,/data/agg_tgw_pr_subregion.py,"Aggregate TGW 12km precip/snow (3ch [precip,swe,snowh], 299x424) -> 18-subregion DAILY series."
+01_acquire_data,10_extract_c404_hourly.py,/home/ubuntu/code/extract_c404_hourly.py,CONUS404 CONTINUOUS-HOURLY 3D+2D extraction for the TEMPORAL-SR NN (3h->1h hub wind). Same THREDDS/vinterp as
+01_acquire_data,11_extract_c404_3d_azure.py,/home/ubuntu/code/extract_c404_3d_azure.py,CONUS404 3D hub-wind + surface-predictor extractor via Azure Open Data zarr (az://noaa/conus404.zarr).
+01_acquire_data,12_c404_3d_azure_run.sh,/home/ubuntu/code/c404_3d_azure_run.sh,Crash-restart wrapper for the Azure-zarr CONUS404-3D extractor. SAFETY: never pkills; touches only
+01_acquire_data,13_era5_download.py,/data/era5_download.py,ERA5 upgrade download (1980-2019) via CDS API. Replaces NCEP 2.5deg with:
+01_acquire_data,14_era5_build_ivt.py,/data/era5_build_ivt.py,"ERA5 'downoven' STEP 2a — build daily IVT (0.5deg) from ERA5 viwve/viwvn, 1980-2019, keys matching the"
+01_acquire_data,15_compute_ivt.py,/data/compute_ivt.py,"Compute daily IVT (vertically integrated vapor transport) from NCEP/NCAR R1, 1980-2019."
+01_acquire_data,16_era5_blocking.py,/data/era5_blocking.py,"ERA5 'downoven' STEP 1 — Tibaldi-Molteni blocking on ERA5 z500 (1.0deg, 6-hourly->daily), 1980-2019."
+01_acquire_data,17_era5_precip_dl.py,/data/era5_precip_dl.py,"ERA5 monthly total precipitation, western US, 1980-2019 — the direct weather driver of hydro (accumulated"
+01_acquire_data,18_build_county_mask.py,/home/ubuntu/code/build_county_mask.py,"County (FIPS) -> TGW 12km grid (299x424) membership, for county-mean weather."
+01_acquire_data,19_county_meta.py,/data/equity_cost/analysis/county_meta.py,"county_meta.csv crosswalk: fips, state, state_name, county_name, population, subregion."
+01_acquire_data,20_build_gridform.py,/data/build_gridform.py,"County-level grid FORM, for Stage 3 (#66). Physical, pre-determined characteristics only - never"
+01_acquire_data,21_acs_pull.py,/data/equity_cost/analysis/acs_pull.py,STEP 4: pull ACS 5-year 2022 county demographics nationwide from the Census API.
+01_acquire_data,22_agg_eaglei_v2.py,/data/equity_cost/analysis/agg_eaglei_v2.py,STEP 3: re-aggregate EAGLE-I county totals 2014-2025 with the BEST files.
+01_acquire_data,23_equity.py,/data/equity_cost/analysis/equity.py,Distributional outage-equity analysis. Writes only under /data/equity_cost/analysis/.
+01_acquire_data,24_state_customers.py,/data/equity_cost/analysis/state_customers.py,"State customer denominator from EAGLE-I coverage files -> state_customers.csv (state, total_customers)."
+01_acquire_data,25_noaa_state_fetch.py,/data/equity_cost/analysis/noaa_state_fetch.py,"Fetch NOAA NCEI Billion-Dollar Disaster per-STATE time series, parse to tidy + rollup."
+01_acquire_data,26_gcam_dl.sh,/data/gcam_dl.sh,
+01_acquire_data,27_gcam_extract.py,/data/gcam_extract.py,"Extract state-level annual electricity demand from a GCAM-USA BaseX db (query 'Total electricity delivered'),"
+01_acquire_data,regrid_tgw.py,/home/ubuntu/code/regrid_tgw.py,Regrid TGW 12km (curvilinear 299x424) -> CONUS404 LR grid (regular latlon 89x211) by conservative
+02_downscale_wind,01_build_norm_3d.py,/home/ubuntu/code/build_norm_3d.py,Per-channel land-ROI z-score stats for the 3D-wind SRGAN (FORK of 01_build_norm.py).
+02_downscale_wind,02_generate_split_3d.py,/home/ubuntu/code/generate_split_3d.py,3-way time-based split for the 3D-wind SRGAN over the 1356 c404_3d frames (FORK of 03_generate_split.py).
+02_downscale_wind,03_build_cache_3d_full.py,/home/ubuntu/code/build_cache_3d_full.py,One pass over the 1356 c404_3d frames -> fp16 land-ROI z-scored HR+LR cache on NVMe (FORK of 05_build_cache.py).
+02_downscale_wind,04_train_c404_3d_v2.py,/home/ubuntu/code/train_c404_3d_v2.py,Physics-fused 3D-WIND SRGAN training on CONUS404 hub-height winds (fp16 cache) — v2 FORK of train_c404_3d.py.
+02_downscale_wind,05_train3d_launch.sh,/home/ubuntu/code/train3d_launch.sh,"Wait for the full /data cache3d build, sanity-check 1 real batch, then launch v2 3D-wind SRGAN training."
+02_downscale_wind,06_fit_bias.py,/home/ubuntu/code/fit_bias.py,"Fit TGW-hist(WRF 12km) -> CONUS404(4km) LR bias correction on 1997-2019, per cell (89x211) per month."
+02_downscale_wind,07_bias_apply.py,/data/bias_apply.py,Standalone TGW->CONUS404 bias apply (apply_hist extracted verbatim from 06_fit_bias.py; no /scratch dep).
+02_downscale_wind,model/__init__.py,,Network definitions for the downscaling generator and its discriminator.
+02_downscale_wind,model/srgan.py,/home/ubuntu/code/model/srgan.py,
+02_downscale_wind,srgan_dataset_3d.py,/home/ubuntu/code/srgan_dataset_3d.py,3D-wind SRGAN dataset from the fp16 NVMe cache (FORK of srgan_dataset.py -> C404SRGAN3D).
+03_wind_solar_generation,01_extract_pt.py,/data/gen_targets/srgan3d_val/extract_pt.py,Extract per-plant T2(K) and PSFC(hPa) from native TGW-3D 2019 at the SAME 1460 stamps as the deploy
+03_wind_solar_generation,02_cache_lr.py,/data/gen_targets/srgan3d_val/cache_lr.py,Stage-1: preprocess the z-scored 21ch LR ONCE (identical across all 7 snapshots).
+03_wind_solar_generation,03_tgw3d_srgan_gen.py,/data/gen_targets/srgan3d_val/tgw3d_srgan_gen.py,"3D-WIND SRGAN downstream validation on TGW DEPLOYMENT domain, YEAR 2019 (3-hourly)."
+03_wind_solar_generation,04_temporal_sr_hist.py,/data/temporal_sr_hist.py,"TEMPORAL super-resolution of hub WIND, 3h->1h (user 2026-07-17: super-res the WEATHER, GODEEEP=validation only)."
+03_wind_solar_generation,05_stageA.sh,/data/stageA.sh,"STAGE A - future wind at native 3-hourly (TSTRIDE=1), 4 climates, 2 concurrent GPU streams."
+03_wind_solar_generation,06_stageA2.sh,/data/stageA2.sh,"STAGE A (retry) - future wind at native 3-hourly, single stream, BATCH=16 (measured safe)."
+03_wind_solar_generation,07_stageC.sh,/data/stageC.sh,"STAGE C - historical wind, 1980-2019, through the SAME 3D SRGAN path as the future arm."
+03_wind_solar_generation,08_stageD.py,/data/stageD.py,"STAGE D - carry hub wind from the 3-hourly 3D cadence to hourly, then apply the power curve."
+03_wind_solar_generation,09_stageD_all.sh,/data/stageD_all.sh,Temporal super-resolution for BOTH arms on one code path and one grid: the 12 km native hourly
+03_wind_solar_generation,10_stageD_future.sh,/data/stageD_future.sh,"Temporal super-resolution of future hub wind, 3-hourly -> hourly, then the power curve."
+03_wind_solar_generation,11_merge_hist.py,/data/merge_hist.py,Merge the 1980-1996 extension with the 1997-2019 arm into one 1980-2019 product.
+03_wind_solar_generation,12_gen_consolidate40.py,/home/ubuntu/code/gen_consolidate40.py,
+03_wind_solar_generation,13_gen_subregion40.py,/data/gen_subregion40.py,Build 18-subregion hourly generation (solar+wind) for 1997-2019 from GODEEEP tgw-gen CF.
+03_wind_solar_generation,14_futsolar.py,/data/futsolar.py,Future solar at hourly cadence on the native 12 km grid.
+03_wind_solar_generation,15_futsolar_all.sh,/data/futsolar_all.sh,Future solar on the CERF policy fleets: ONE CLIMATE AT A TIME with a wide worker pool.
+03_wind_solar_generation,16_histsolar.sh,/data/histsolar.sh,"Historical hourly solar, 1997-2019, native 12 km, from the surface archive just downloaded."
+03_wind_solar_generation,17_fut_gen.py,/data/gen_targets/srgan3d_val/fut_gen.py,R4 FUTURE-GENERATION pass: apply the VALIDATED deployment pipeline
+03_wind_solar_generation,18_cap_correct_dens.py,/data/gen_targets/srgan3d_val/cap_correct_dens.py,"CAPACITY correction: reweight each plant's capacity by its 2019 online fraction (EIA-860 2020,"
+03_wind_solar_generation,gen_physics.py,/home/ubuntu/code/gen_physics.py,"Physics-direct generation: PySAM PVWatts v5 (solar) + Windpower (wind),"
+03_wind_solar_generation,utils/__init__.py,,Solar-geometry and irradiance-decomposition helpers used by gen_physics.py.
+03_wind_solar_generation,utils/disc.py,/home/ubuntu/ref/tgw-gen/utils/disc.py,DISC model (Maxwell 1987): GHI -> DNI. Faithful to the standard / pvlib implementation.
+03_wind_solar_generation,utils/sza.py,/home/ubuntu/ref/tgw-gen/utils/sza.py,"NOAA solar-position: returns (zenith_deg, azimuth_deg). Matches the eqtime/decl used in srgan_infer/bias_apply."
+04_demand_model,01_build_county_foundation.py,/data/build_county_foundation.py,#40 foundation: replace pop-share county disaggregation with REAL intra-BA structure from OEDI-8562.
+04_demand_model,02_build_county_sectors.py,/data/build_county_sectors.py,#40 sectoral layer: decompose each county's REAL total load (8562 foundation) into
+04_demand_model,03_build_sector_hourly.py,/data/build_sector_hourly.py,"Part B step 2: subregion x sector x hourly load, 1980-2024. Splits the real subregion total into"
+04_demand_model,04_hist_load40.py,/data/hist_load40.py,Future climate-driven load pipeline (Tier 1: no GCAM growth; socioeconomics held at present).
+04_demand_model,05_calibrate_final.py,/data/calibrate_final.py,"Stage 5 FINAL: adaptive per-BA calibration. Candidate configs {none, month-EQM, season-EQM};"
+04_demand_model,06_produce_anchored_load.py,/data/produce_anchored_load.py,#37 core: produce the SEDS-anchored REAL historical load (1980-2019).
+04_demand_model,07_build_load_tail4.py,/data/build_load_tail4.py,"Part A (v4, FINAL): base 1980-2019 = hist_full40_seds AS-IS (validated model/EIA930 basis). Tail 2020-24"
+04_demand_model,08_produce_real_netload.py,/data/produce_real_netload.py,#40: REAL observed 18-subregion net-load from EIA-930 (2016-2025). Demand + gen-by-source from the
+04_demand_model,09_future_pipeline.py,/data/future_pipeline.py,Future climate-driven load pipeline (Tier 1: no GCAM growth; socioeconomics held at present).
+04_demand_model,build_subregion_hydro.py,/data/hydro/real/build_subregion_hydro.py,Build per-subregion REAL hourly hydro product + dispatch shape for the 18 study subregions.
+04_demand_model,loadcal.py,/data/loadcal.py,Apply the validated quantile-mapping calibration to a balancing-authority load series.
+04_demand_model,paths.py,/data/paths.py,The one place the historical net-load product is named.
+05_capacity_siting,01_gcam_capacity_extract.py,/data/gcam_usa/gcam_capacity_extract.py,Extract future GENERATION-CAPACITY by technology from the 8 IM3 GCAM-USA BaseX databases.
+05_capacity_siting,02_build_obbba_capacity.py,/data/gcam_usa/build_obbba_capacity.py,Build the OBBBA capacity pathway from the IRA-era GCAM canonical-8 baseline.
+05_capacity_siting,03_build_hedc_increment.py,/data/cerf_out/build_hedc_increment.py,Build the HEDC demand-transformation increment on the TELL 3-hourly UTC timeline.
+05_capacity_siting,04_build_policy_layer.py,/data/policy_data/build_policy_layer.py,Build the STATE/COUNTY renewable-policy layer on the GRIDCERF Albers-1km grid.
+05_capacity_siting,05_build_solar_policy.py,/data/policy_data/build_solar_policy.py,"Build the SOLAR policy layer, symmetric to the wind layer, and merge into policy_arrays.npz."
+05_capacity_siting,06_cerf_full.py,/data/cerf_out/cerf_full.py,"FINAL publication-grade CERF siting: 8 canonical scenarios (4 climate x {ssp3,ssp5}),"
+05_capacity_siting,07_cerf_policy.py,/data/cerf_out/cerf_policy.py,POLICY-AWARE CERF siting: identical to 06_cerf_full.py but with a STATE/COUNTY wind-siting
+05_capacity_siting,08_cerf_obbba.py,/data/cerf_out/cerf_obbba.py,OBBBA-REGIME CERF siting (third policy regime: no-policy / IRA-policy / OBBBA).
+05_capacity_siting,cerf_lmp_zones.py,/data/cerf_out/cerf_lmp_zones.py,Swappable LMP source for CERF LMP-aware siting.
+06_netload_panel,01_netload_subregion.py,/data/netload_subregion.py,"Build 18-subregion hourly LOAD, GEN, and NET-LOAD for 1997-2019."
+06_netload_panel,02_full_agg.py,/data/full_agg.py,"Stage 2 (full): our native-12km TGW -> pop-weighted BA hourly weather, 2016-2019."
+06_netload_panel,03_stageE.py,/data/stageE.py,"Stage E: 18-subregion hourly load, wind, solar and net load, on OUR production chain."
+06_netload_panel,04_stageE_future.py,/data/stageE_future.py,"Stage E, future arm: 18-subregion hourly load, wind, solar and net load for all 32 scenarios."
+06_netload_panel,05_panel_v3.py,/data/panel_v3.py,Rebuild the analysis panel on our own net load.
+07_hazard_calendar,01_county_weather.py,/data/county_weather.py,"Task #62 — county-resolved DAILY weather 1980-2019, the same construction as the 18-subregion"
+07_hazard_calendar,02_subregion_weather2.py,/data/subregion_weather2.py,"Prereq (#15) v2: aggregate TGW cells -> 18 subregions, DAILY weather stats, 1980-2019."
+07_hazard_calendar,03_c404_county_weather.py,/data/c404_county_weather.py,"Task #63, step 1: rebuild county daily weather on CONUS404 instead of TGW."
+07_hazard_calendar,04_c404_pipeline.py,/data/c404_pipeline.py,"Task #63, step 3: merge both CONUS404 arms, rebuild the hazard flags with the climatology frozen"
+07_hazard_calendar,05_merge_county_weather.py,/data/merge_county_weather.py,"Merge the county-weather shards, recombining boundary-split days EXACTLY (same rule as"
+07_hazard_calendar,06_hazard_heat.py,/data/hazard_heat.py,"Hazard #1: heat & humid-heat (warm season) net-load composite, 1980-2019."
+07_hazard_calendar,07_hazard_cold.py,/data/hazard_cold.py,"Hazard #4: cold-outbreak (CSDI) net-load composite, 1980-2019, the EXTREME metric that sharpens the"
+07_hazard_calendar,08_hazard_fire.py,/data/hazard_fire.py,"Hazard #5: fire-WEATHER (HDW) climatology + power-system composite, 1980-2019."
+07_hazard_calendar,09_hazard_ar.py,/data/hazard_ar.py,"Hazard #3: atmospheric-river landfall net-load composite, 1980-2019 — SAME methodology as ENSO"
+07_hazard_calendar,10_hazard_tc.py,/data/hazard_tc.py,"Hazard #6: the subregion tropical-cyclone flag and its net-load composite, 1980-2019, HURDAT2."
+07_hazard_calendar,11_county_hazard_flags.py,/data/county_hazard_flags.py,"Task #62 (second half): county-resolved hazard flags 1980-2019, evaluated on each COUNTY's own"
+07_hazard_calendar,12_county_tc_swath.py,/data/county_tc_swath.py,"County-resolved tropical-cyclone wind exposure, 1980-2022, from HURDAT2."
+07_hazard_calendar,13_c404_convective.py,/data/c404_convective.py,"County-day SEVERE CONVECTIVE flag from CONUS404, 2015-01-01 .. 2022-09-30."
+07_hazard_calendar,14_vre_drought.py,/data/vre_drought.py,"Hazard #2: compound VRE-drought (Dunkelflaute), 1980-2019. Rinaldi-style daily index (<50% of day-of-year"
+07_hazard_calendar,15_subregion_flags.py,/data/subregion_flags.py,Build the 18-subregion hazard flags and write them into the analysis panel.
+07_hazard_calendar,16_harden_hazards.py,/data/harden_hazards.py,"Item 1: statistical hardening of the 5 event-composite hazards (heat, cold, fire, AR, TC) to match the"
+07_hazard_calendar,17_harden_vre.py,/data/harden_vre.py,"Item 5: statistical hardening of Hazard #2 (compound VRE-drought), to match the other 5 hazards."
+07_hazard_calendar,18_ivt_agg.py,/data/ivt_agg.py,"Stage 1 of the atmospheric-river rebuild: subregion-mean IVT, daily, 1980-2019."
+07_hazard_calendar,19_blocking.py,/data/blocking.py,STEP B: Tibaldi-Molteni sector blocking + storm-track index from NCEP/NCAR Z500 daily 1997-2019.
+07_hazard_calendar,20_oni_tag.py,/data/oni_tag.py,DJF-centered winter (the ENSO peak season) label per winter year (Dec of y-1..Feb of y)
+07_hazard_calendar,21_mode_tags40.py,/data/mode_tags40.py,"Build monthly + seasonal circulation-mode index table for 1997-2019: ONI, PNA, NAO, AO (observed NOAA)."
+07_hazard_calendar,hazard_defs.py,/data/hazard_defs.py,The single source of truth for every hazard definition in this repository.
+08_adequacy_analysis,01_composite40_oc.py,/data/composite40_oc.py,"Historical ENSO composite of 18-subregion winter (DJF) net-load extremes, 1998-2019."
+08_adequacy_analysis,02_composite_extremes40_oc.py,/data/composite_extremes40_oc.py,STEP A: sub-seasonal EXTREME / Dunkelflaute metrics composite (replaces DJF seasonal means).
+08_adequacy_analysis,03_composite_modes40_oc.py,/data/composite_modes40_oc.py,"Multi-mode DJF composite: ENSO/PNA/NAO/AO on 18-subregion net-load & VRE gen, 1998-2019."
+08_adequacy_analysis,04_blocking_composite40_oc.py,/data/blocking_composite40_oc.py,"STEP B2: DAILY composite of subregion net-load & VRE on BLOCKED vs UNBLOCKED DJF days, by sector."
+08_adequacy_analysis,05_analogue.py,/data/analogue.py,"Model-internal causal contrast for the hazard arm, by analogue substitution."
+08_adequacy_analysis,06_ar_variants.py,/data/ar_variants.py,"Stage 2: candidate atmospheric-river flags, and the two tests the incumbent fails."
+08_adequacy_analysis,07_ar_adopt_oc.py,/data/ar_adopt_oc.py,Adopt the ivt_p95_cov25 atmospheric-river flag and regenerate everything Figure 1 reads.
+08_adequacy_analysis,08_fig1_row1.py,/data/fig1_row1.py,"Figure 1 row 1, rebuilt on the published design: a per-subregion composite on the same flags"
+09_outage_attribution,01_bridge.py,/data/bridge.py,Rebuild the outage-channel bridge that Figure 2d draws.
+09_outage_attribution,02_didppml.py,/data/didppml.py,"Figure 3e and 3f, re-estimated by Poisson pseudo-likelihood on the published landfall panel."
+09_outage_attribution,03_attrib_post.py,/data/attrib_post.py,"Post-estimation for the unified attribution: individual removals, physical checks, and the"
+09_outage_attribution,04_chk3.py,/data/chk3.py,Attribution restricted to the hazards whose pre-event blocks are zero.
+09_outage_attribution,05_conv_dose.py,/data/conv_dose.py,"Severe convection, identified inside the treated counties rather than against a control pool."
+09_outage_attribution,06_tc_heterog.py,/data/tc_heterog.py,Does the hurricane effect differ by county trait?
+09_outage_attribution,07_terc.py,/data/terc.py,Figure 4b and 4c: does the same hazard cost more where the county is disadvantaged?
+09_outage_attribution,08_merge_terc.py,/data/merge_terc.py,Merge the per-shard trait files 07_terc.py writes when it is run as k/n.
+09_outage_attribution,09_terc4d.py,/data/terc4d.py,Figure 4b and 4c: does the same hazard cost more where the county is disadvantaged?
+09_outage_attribution,10_step4_equity.py,/data/step4_equity.py,STEP 4 — the equity accounting.
+09_outage_attribution,11_eq4.py,/data/eq4.py,Figure 4a and 4e on the attribution of Figure 3b.
+09_outage_attribution,12_eq4b.py,/data/eq4b.py,"The remaining numbers for section 4: the two total-outage ratios in the burden paragraph, and"
+09_outage_attribution,13_r4_ledger.py,/data/r4_ledger.py,"R4, reduced to the two facts that carry the argument."
+09_outage_attribution,14_rebuild_all_storms.py,/data/rebuild_all_storms.py,Rebuild the DAILY observed-vs-expected demand series for all nine measurable landfalls.
+09_outage_attribution,15_fig3_unified.py,/data/fig3_unified.py,One estimator for every hazard in Figure 3.
+09_outage_attribution,16_fig4data.py,/data/fig4data.py,"Assemble every number Figure 4 needs, and check each one before it is drawn."
+09_outage_attribution,attrib.py,/data/attrib.py,"Unified hazard attribution for county outage: one panel, every hazard, intensity, and an"
+09_outage_attribution,attrib_artifacts.py,/data/attrib_artifacts.py,"One place that names the hazard screen's artifacts, so no consumer spells them out."
+09_outage_attribution,hazsets.py,/data/hazsets.py,"The screened hazard SET, read from one place. attrib_artifacts.py owns the artifact NAMES."
+10_future_adequacy,01_r4_ourchain.py,/data/r4_ourchain.py,"Rebuild the whole R4 artifact set on the NO-HYDRO net-load definition, to match Figure 1."
+10_future_adequacy,02_county_stress.py,/data/county_stress.py,County-level stress hours: the one thing in Figure 5 that is neither a peak nor a delta of one.
+10_future_adequacy,03_events_oc.py,/data/events_oc.py,"Every individual exceedance event, as an object with a duration and a depth."
+10_future_adequacy,04_firmslope.py,/data/firmslope.py,How much firm capacity does a GW of VRE actually buy?
+10_future_adequacy,05_hazfreq.py,/data/hazfreq.py,"Figure 1's hazard taxonomy, carried into the futures, by county."
+10_future_adequacy,06_fixtc.py,/data/fixtc.py,"The 34 kt row was counting every windy day, not tropical cyclones."
+10_future_adequacy,07_vrefut_oc.py,/data/vrefut_oc.py,"VRE drought in the futures, on the same Rinaldi rule the historical hazard uses."
+10_future_adequacy,08_r5_decomp4.py,/data/cerf_out/r5_decomp4.py,4-factor variance decomposition behind r5_adequacy_decomp4.json (the file
+10_future_adequacy,09_arfut.py,/data/arfut.py,"The atmospheric river, projected. Figure 5g's sixth hazard, which used to be a blank row."
+10_future_adequacy,baseline.py,/data/baseline.py,The historical reference period every Figure 5 comparison is made against.
+11_damage_projection,01_r5_tc_storm.py,/data/scratch_r5/r5_tc_storm.py,"R5 TC arm, step 3 - STORM-AGGREGATE statistics."
+11_damage_projection,02_r5_tc_window.py,/data/scratch_r5/r5_tc_window.py,"R5 TC arm, step 1 - the HURDAT2 space-time window."
+11_damage_projection,03_r5_tc_expose.py,/data/scratch_r5/r5_tc_expose.py,"R5 TC arm, step 2 - county TC exposure on TGW, frozen calibration, gates, future ratios."
+11_damage_projection,04_r5_agg.py,/data/scratch_r5/r5_agg.py,R5 damage arm - county-day aggregation of TGW 2D + precipitation.
+11_damage_projection,05_r5_timeshape.py,/data/r5_timeshape.py,"The two things every version of Figure 4 so far has thrown away: the 21 years, and the day."
+11_damage_projection,06_r5_dose2.py,/data/r5_dose2.py,"The intensity-margin projection, rebuilt on the unified PPML panel."
+11_damage_projection,07_dose6.py,/data/dose6.py,"The wind dose-response Figure 6 applies, taken from the panel that produces Figure 3a and 3b."
+11_damage_projection,08_tail.py,/data/tail.py,"How the SEVERITY tail moves, as a continuum in the threshold, in all four realizations."
+12_figures,01_fig0_regions.py,/data/figs/fig0_regions.py,FIGURE 0 — the 18 subregions and the plain-English name each one carries in the text.
+12_figures,02_fig1_full_oc.py,/data/figs/fig1_full_oc.py,FIGURE 1 — assembled at Nature double-column width.
+12_figures,03_fig2_v2_oc.py,/data/figs/fig2_v2_oc.py,FIGURE 2 — From hazard to blackout: two distinct outage channels.
+12_figures,04_fig3_v8.py,/data/figs/fig3_v8.py,"FIGURE 3 v8 — Which weather causes outages, where the burden falls, and how it scales."
+12_figures,05_fig4_v2.py,/data/figs/fig4_v2.py,"FIGURE 4 v2 — who carries the burden, what moves with it, and where the money goes."
+12_figures,06_fig5_adequacy_oc.py,/data/figs/fig5_adequacy_oc.py,FIGURE 5 — future adequacy across all 32 realizations.
+12_figures,07_fig6_damage.py,/data/figs/fig6_damage.py,"FIGURE 6. The damage channel: what changes in the storms, what a knot is worth, what it adds to."
+12_figures,figstyle.py,/data/figs/figstyle.py,Shared figure style for the paper. Import this first in every panel script.

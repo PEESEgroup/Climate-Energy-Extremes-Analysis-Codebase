@@ -1,0 +1,15 @@
+# GPU environment for the super-resolution network (Python 3.13.14, CUDA 13.0).
+# Runs stage 02 (training and inference) and the 3D wind inference in stage 03.
+# Install torch and torchvision from the PyTorch CUDA index, then the rest from PyPI.
+--extra-index-url https://download.pytorch.org/whl/cu130
+torch==2.12.1+cu130
+torchvision==0.27.1+cu130
+numpy==2.3.5
+pandas==2.3.3
+scipy==1.18.0
+h5py==3.16.0
+netCDF4==1.7.4
+pyarrow==24.0.0
+matplotlib==3.11.0
+fsspec==2026.6.0
+tqdm==4.68.3

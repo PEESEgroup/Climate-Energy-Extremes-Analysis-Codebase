@@ -1,0 +1,18 @@
+# Main analysis environment (Python 3.12.3).
+# Runs stages 01, 03, 06, 07, 08, 09, 10, 11 and 12. Four programs in stages 01 and 03
+# also need torch; see requirements-gpu.txt and the note in the README.
+# Versions are the ones the released results were produced with.
+numpy==2.5.1
+pandas==3.0.3
+scipy==1.18.0
+xarray==2026.7.0
+pyarrow==25.0.0
+matplotlib==3.11.1
+geopandas==1.1.4
+shapely==2.1.2
+requests==2.34.2
+PyYAML==6.0.3
+zarr==3.3.0
+adlfs==2026.8.0
+fsspec==2026.7.0
+NREL-PySAM==7.1.1.post1

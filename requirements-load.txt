@@ -1,0 +1,23 @@
+# Demand-model environment (Python 3.10.20).
+# Runs stage 04 (county demand model) and the panel regressions in stage 09.
+# TELL and linearmodels pin this environment to Python 3.10 and numpy 1.x.
+numpy==1.26.4
+pandas==2.3.3
+scipy==1.15.3
+xarray==2025.6.1
+netCDF4==1.7.4
+pyarrow==25.0.0
+matplotlib==3.10.9
+scikit-learn==1.0.2
+statsmodels==0.14.6
+linearmodels==7.0
+geopandas==1.1.4
+shapely==2.1.2
+pyproj==3.7.1
+dask==2026.7.0
+fsspec==2026.6.0
+joblib==1.5.3
+openpyxl==3.1.5
+requests==2.20.1
+PyYAML==6.0.3
+tqdm==4.68.4
