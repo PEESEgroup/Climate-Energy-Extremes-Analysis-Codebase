@@ -1,7 +1,6 @@
 # Climate-Energy Extremes Analysis Codebase
 
-Code for *Separating adequacy and damage channels reorders the climate hazards and
-the remedies for a decarbonizing power system*. The repository holds every program that produces a number, a table or a
+The repository holds every program that produces a number, a table or a
 figure in the manuscript and its Supplementary Information, organized in the order the pipeline
 runs.
 
